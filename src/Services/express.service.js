@@ -6,11 +6,14 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT;
 const app = express();
 
-//middleware
+//parse request of  content-type application/x-www-form-urlencoded
 app.use((req, res, next) => {
   bodyParser.urlencoded({ extended: false });
   next();
 });
+
+//parse request of content-type application/json
+app.use(bodyParser.json());
 
 app.use(cors());
 exports.start = () => {
@@ -19,6 +22,6 @@ exports.start = () => {
       console.log(`Error: ${err}`);
       process.exit(-1);
     }
-    console.log(`🚀 Server is running on http://localhost/${port}`);
+    console.log(`🚀 Server is running on http://localhost:${port}`);
   });
 };
