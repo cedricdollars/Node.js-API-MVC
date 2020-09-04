@@ -1,0 +1,4 @@
+GET http://localhost:5000/api/v1/users/ HTTP/1.1
+
+##
+POST http://localhost:5000/api/v1/users/add HTTP/1.1
