@@ -8,16 +8,15 @@ const Users = function (user, role) {
   this.password = user.password;
   this.role = role;
 };
-let insertID = 1;
+
 Users.create = function (newUser, result) {
   db.query("INSERT INTO users SET ?", newUser, (err, res) => {
-    insertID += 1;
     if (err) {
-      console.log(`error while creating user :${err}`);
-      result(err, null);
+      console.log(`error while creating user`);
+      return result(err, null);
     } else {
-      console.log("User created :", { id: insertID, ...newUser });
-      result(null, { id: insertID, ...newUser });
+      console.log("User created :", newUser);
+      return result(null, res);
     }
   });
 };
@@ -25,17 +24,16 @@ Users.create = function (newUser, result) {
 Users.findById = function (id, result) {
   db.query("SELECT * FROM users WHERE id = ?", id, (err, res) => {
     if (err) {
-      console.log(`An error occured : ${err}`);
-      result(err, null);
-    } else {
-      console.log("User found ");
-      result(null, res);
+      console.log("An error occured");
+      return result(err, null);
     }
+    console.log(`User found with id ${id}`);
+    return result(null, res);
   });
 };
 //Retrieve all users
 Users.findAll = function (result) {
-  db.query("SELECT * FROM users", (err, res) => {
+  db.query("SELECT * FROM users ORDER BY id ASC", (err, res) => {
     if (err) {
       console.log(`Error : ${err}`);
       result(err, null);
@@ -47,17 +45,17 @@ Users.findAll = function (result) {
 };
 
 //Update user
-Users.update = function (id, result, user) {
+Users.update = function (id, user, result) {
   db.query(
-    "UPDATE users SET admin= ?, email=?, firstname=?, lastname=?, password=? WHERE id=?",
-    [user.email, user.firstname, user.lastname, user.password],
+    "UPDATE users SET email=?, firstname=?, lastname=?, password=? WHERE id = ?",
+    [user.email, user.firstname, user.lastname, user.password, id],
     (err, res) => {
       if (err) {
         console.log("Error while updaing", err);
-        result(err, null);
+        return result(err, null);
       } else {
-        console.log("successfull updated user :", { id: id, ...user });
-        console.log(res, null);
+        console.log("successfull updated user :", user);
+        return result(null, res);
       }
     }
   );

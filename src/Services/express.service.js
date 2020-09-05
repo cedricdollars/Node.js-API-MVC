@@ -3,8 +3,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
-const usersRoutes = require("../Routes/userRoutes");
-
+const apiRouter = require("../Routes/indexRoute");
 const port = process.env.PORT;
 const app = express();
 
@@ -17,8 +16,7 @@ app.use((req, res, next) => {
 //parse request of content-type application/json
 app.use(bodyParser.json());
 
-app.use("/api/v1/", usersRoutes);
-
+app.use("/api/v1", apiRouter);
 app.use(cors());
 exports.start = () => {
   app.listen(port || 4000, (err) => {
