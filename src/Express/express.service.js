@@ -18,11 +18,12 @@ app.use(bodyParser.json());
 
 app.use("/api/v1", apiRouter);
 app.use(cors());
+
 exports.start = () => {
   app.listen(port || 4000, (err) => {
     if (err) {
       console.log(`Error: ${err}`);
-      process.exit(-1);
+      process.exit(1);
     }
     console.log(`🚀 Server is running on http://localhost:${port}`);
   });

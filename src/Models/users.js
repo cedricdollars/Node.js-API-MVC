@@ -73,4 +73,5 @@ Users.delete = function (id, result) {
     }
   });
 };
+
 module.exports = Users;
