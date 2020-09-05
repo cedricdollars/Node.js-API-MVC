@@ -7,13 +7,16 @@ const apiRouter = require("../Routes/indexRoute");
 const port = process.env.PORT;
 const app = express();
 
-//parse request of  content-type application/x-www-form-urlencoded
+let helmet = require("helmet");
+
+//traduit les requêtes pour les types d'en-tête  application/x-www-form-urlencoded
 app.use((req, res, next) => {
   bodyParser.urlencoded({ extended: true });
   next();
 });
 
-//parse request of content-type application/json
+app.use(helmet());
+//Traduit les requêtes pour les types d'en-tête application/json
 app.use(bodyParser.json());
 
 app.use("/api/v1", apiRouter);

@@ -12,10 +12,8 @@ function verifyToken(req, res, next) {
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       return res.status(401).send({
-        error: {
-          code: 401,
-          message: "Unauthorize",
-        },
+        code: 401,
+        message: "Access denied, Unauthorize!",
       });
     }
     req.user = decoded;

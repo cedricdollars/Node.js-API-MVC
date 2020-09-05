@@ -56,4 +56,7 @@ Parking.findByUser = function (num_place, result) {
     }
   );
 };
+Parking.update = function (num_place, result) {
+  db.query("UPDATE parking SET ");
+};
 module.exports = Parking;
