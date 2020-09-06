@@ -9,18 +9,15 @@ const roleAdmin = roles[0].toString();
 exports.findAll = function (req, res) {
   Users.findAll((err, user) => {
     if (err) {
-      console.log("Error retrieving data");
-      res.status(500).send({
+      return res.status(500).send({
         error: true,
         message: "Some error occured, please try agin..." || err.message,
       });
-    } else {
-      console.log("retrieving success!", user);
-      res.status(200).send({
-        error: false,
-        users: user,
-      });
     }
+    return res.status(200).send({
+      error: false,
+      users: user,
+    });
   });
 };
 
@@ -36,12 +33,16 @@ exports.create = function (req, res) {
     });
   } else {
     Users.create(user, function (err, user) {
-      if (err) throw err;
+      if (err) {
+        return res.status(500).send({
+          message: "Internal error",
+        });
+      }
       res.json({
         error: false,
         message: "user created !!",
       });
-      //res.send(user);
+      return res.send(user);
     });
   }
 };
@@ -50,15 +51,16 @@ exports.findById = function (req, res) {
   const id = req.params.id;
   Users.findById(id, function (err, user) {
     if (err) {
-      res.status(500).send({
-        error: true,
-        message: "Server internal error",
-      });
-    }
-    if (user.lenght < 0) {
-      return res.status(404).send({
-        Not_found_exception: "Not found id specified",
-      });
+      if (err.kind === "not_found") {
+        return res.status(404).send({
+          Not_found_exception: "id not found",
+        });
+      } else {
+        return res.status(500).send({
+          error: true,
+          message: "Server internal error",
+        });
+      }
     }
     return res.send({
       error: false,
@@ -71,8 +73,8 @@ exports.update = function (req, res) {
   const data = req.body;
   const salt = genSaltSync(5);
   data.password = hashSync(data.password, salt);
-  const user = new Users(req.body, roleAdmin);
-  if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+  const user = new Users(data, roleAdmin);
+  if (data.constructor === Object && Object.keys(data).length === 0) {
     res.status(400).send({
       error: true,
       message: "You nedd to provide fields for update user",
@@ -93,6 +95,7 @@ exports.update = function (req, res) {
     }
     return res.send({
       error: false,
+      code: 201,
       message: "User updated",
     });
   });

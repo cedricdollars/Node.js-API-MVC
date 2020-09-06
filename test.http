@@ -1,0 +1,14 @@
+GET http://localhost:5000/api/v1/users/
+
+### Create a new user
+POST http://localhost:5000/api/v1/users/add 
+
+### Get a user by id
+GET http://localhost:5000/api/v1/users/id
+
+### Update user
+PATCH http://localhost:5000/api/v1/users/id
+
+### Delete a user
+
+DELETE http://localhost:5000/api/v1/users/id

@@ -12,7 +12,6 @@ const Users = function (user, role) {
 Users.create = function (newUser, result) {
   db.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {
-      console.log(`error while creating user`);
       return result(err, null);
     } else {
       console.log("User created :", newUser);
@@ -20,38 +19,37 @@ Users.create = function (newUser, result) {
     }
   });
 };
-//Retrieve one user
+//afficher un utilisateur spécifique
 Users.findById = function (id, result) {
   db.query("SELECT * FROM users WHERE id = ?", id, (err, res) => {
     if (err) {
-      console.log("An error occured");
       return result(err, null);
     }
-    console.log(`User found with id ${id}`);
-    return result(null, res);
+    if (res.length) {
+      console.log(`User found with id ${id}`);
+      return result(null, res[0]);
+    }
+    result({ kind: "not_found" }, null);
   });
 };
-//Retrieve all users
+//Liste des utilisateurs
 Users.findAll = function (result) {
   db.query("SELECT * FROM users ORDER BY id ASC", (err, res) => {
     if (err) {
-      console.log(`Error : ${err}`);
       result(err, null);
     } else {
-      console.log(`Users : ${res}`);
+      console.log("Users : ", res);
       result(null, res);
     }
   });
 };
 
-//Update user
 Users.update = function (id, user, result) {
   db.query(
     "UPDATE users SET email=?, firstname=?, lastname=?, password=? WHERE id = ?",
     [user.email, user.firstname, user.lastname, user.password, id],
     (err, res) => {
       if (err) {
-        console.log("Error while updaing", err);
         return result(err, null);
       } else {
         console.log("successfull updated user :", user);
@@ -61,7 +59,6 @@ Users.update = function (id, user, result) {
   );
 };
 
-//Delete user
 Users.delete = function (id, result) {
   db.query("DELETE FROM users WHERE id = ?", id, (err, res) => {
     if (err) {

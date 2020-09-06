@@ -9,18 +9,35 @@ const app = express();
 
 let helmet = require("helmet");
 
-//traduit les requêtes pour les types d'en-tête  application/x-www-form-urlencoded
 app.use((req, res, next) => {
   bodyParser.urlencoded({ extended: true });
   next();
 });
 
 app.use(helmet());
-//Traduit les requêtes pour les types d'en-tête application/json
+
 app.use(bodyParser.json());
 
+//Routes
 app.use("/api/v1", apiRouter);
+
 app.use(cors());
+
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
+//Gestion des erreurs
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.send({
+    error: {
+      status: error.status || 500,
+      message: error.message,
+    },
+  });
+});
 
 exports.start = () => {
   app.listen(port || 4000, (err) => {
