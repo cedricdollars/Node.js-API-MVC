@@ -2,10 +2,10 @@
 -- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Sep 03, 2020 at 04:53 PM
--- Server version: 5.7.26
--- PHP Version: 7.3.8
+-- Hôte : localhost:8889
+-- Généré le :  lun. 07 sep. 2020 à 18:25
+-- Version du serveur :  5.7.26
+-- Version de PHP :  7.3.8
 
 SET SQL_MODE
 = "NO_AUTO_VALUE_ON_ZERO";
@@ -13,13 +13,13 @@ SET time_zone
 = "+00:00";
 
 --
--- Database: `nodejs_api`
+-- Base de données :  `nodejs_api`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `parking`
+-- Structure de la table `parking`
 --
 
 CREATE TABLE `parking`
@@ -36,18 +36,29 @@ CREATE TABLE `parking`
 (11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `parking`
+--
+
+INSERT INTO `parking` (`
+num_place`,
+`avaibility
+`, `floor`, `started_usage`, `ended_usage`, `user_id`) VALUES
+(3, 1, 1, '21:47:54', '21:47:54', 1),
+(4, 0, 1, '21:48:17', '21:48:17', 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
 CREATE TABLE `users`
 (
 `id` int
 (11) NOT NULL,
-`admin` tinyint
-(1) NOT NULL DEFAULT '1',
+`role` varchar
+(255) DEFAULT NULL,
 `email` varchar
 (100) NOT NULL,
 `firstname` varchar
@@ -55,15 +66,27 @@ CREATE TABLE `users`
 `lastname` varchar
 (50) DEFAULT NULL,
 `password` varchar
-(50) NOT NULL
+(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indexes for dumped tables
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`
+id`,
+`role
+`, `email`, `firstname`, `lastname`, `password`) VALUES
+(1, 'ADMIN', 'gabyngoune@yahoo.fr', 'ced', 'Ngouné', '123456'),
+(2, 'ADMIN', 'ngounecedric@yahoo.fr', 'Florian', 'david', '$2b$05$ht4MfoaEXu833c0XO0V7be9SGoVczrVvILl/wOUGgmWnAGMYNQcUi'),
+(13, 'ADMIN', 'gabyngoune@yahoo.fr', 'ced', 'Ngouné', '$2b$05$qzqg/uLlB8cwM./UpkUtf.zu4xcsfcUD.claKf9v4uVoTuOLADfmC');
+
+--
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `parking`
+-- Index pour la table `parking`
 --
 ALTER TABLE `parking`
 ADD PRIMARY KEY
@@ -72,36 +95,36 @@ ADD KEY `fk_user_parking`
 (`user_id`);
 
 --
--- Indexes for table `users`
+-- Index pour la table `users`
 --
 ALTER TABLE `users`
 ADD PRIMARY KEY
 (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `parking`
+-- AUTO_INCREMENT pour la table `parking`
 --
 ALTER TABLE `parking`
 MODIFY `num_place` int
-(11) NOT NULL AUTO_INCREMENT;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
 MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `parking`
+-- Contraintes pour la table `parking`
 --
 ALTER TABLE `parking`
 ADD CONSTRAINT `fk_user_parking` FOREIGN KEY
