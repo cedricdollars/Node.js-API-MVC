@@ -38,11 +38,10 @@ exports.create = function (req, res) {
           message: "Internal error",
         });
       }
-      res.json({
+      return res.json({
         error: false,
         message: "user created !!",
       });
-      return res.send(user);
     });
   }
 };

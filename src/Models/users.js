@@ -29,7 +29,7 @@ Users.findById = function (id, result) {
       console.log(`User found with id ${id}`);
       return result(null, res[0]);
     }
-    result({ kind: "not_found" }, null);
+    return result({ kind: "not_found" }, null);
   });
 };
 //Liste des utilisateurs
