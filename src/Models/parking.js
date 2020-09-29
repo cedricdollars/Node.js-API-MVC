@@ -1,13 +1,14 @@
 const db = require("../Config/db.config");
+const moment = require("moment");
 
-//constructeur parking
 const Parking = function (parking) {
-  this.avaibility = parking.avaibility ? 1 : 0; // 1 et 0 sont des booléens
   this.floor = parking.floor;
   this.started_usage = parking.started_usage
     ? parking.started_usage
-    : new Date();
-  this.ended_usage = parking.started_usage ? parking.started_usage : new Date();
+    : moment().format("HH:mm");
+  this.ended_usage = parking.started_usage
+    ? parking.started_usage
+    : moment().format("HH:mm");
   this.user_id = parking.user_id;
 };
 
@@ -57,7 +58,7 @@ Parking.findByUser = function (id, callback) {
 // Réassigner une place à un utilisateur
 Parking.update = function (num_place, parking, result) {
   db.query(
-    "UPDATE parking SET avaibility=?, user_id=? WHERE num_place = ? AND avaibility = 1",
+    "UPDATE parking SET floor=?, user_id=? WHERE num_place = ?",
     [parking.avaibility, parking.user_id, num_place],
     (err, res) => {
       if (err) {
@@ -72,5 +73,21 @@ Parking.update = function (num_place, parking, result) {
   );
 };
 
+// Liberer une place dans le parking
+Parking.delete = async function (num_place, result) {
+  const data = await db.query(
+    "DELETE FROM parking WHERE num_place = ?",
+    num_place,
+    (err, res) => {
+      if (err) {
+        console.log("Error : ", err.sqlMessage);
+        return result(err, null);
+      }
+      console.log("One place is now free");
+      return result(res, null);
+    }
+  );
+};
 // Affichage du temps d'occupation dans le parking
+Parking.durationTime = async function () {};
 module.exports = Parking;

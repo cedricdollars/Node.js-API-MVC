@@ -86,12 +86,27 @@ exports.updatePlace = function (req, res) {
       });
       return;
     }
-    //  console.log(`la place numéro ${num_place} a été modifié`);
 
     return res.send({
       error: false,
       code: 201,
       message: `La place numéro ${num_place} a été réassigné à l'utilisateur ${updatedPlace.user_id}`,
+    });
+  });
+};
+
+exports.delete = function (req, res) {
+  let num_place = req.params.num_place;
+  Parking.delete(num_place, (err, data) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error " + err,
+      });
+    }
+    return res.send({
+      error: false,
+      message: "user deleted ",
     });
   });
 };

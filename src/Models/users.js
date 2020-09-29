@@ -65,7 +65,7 @@ Users.delete = function (id, result) {
       console.log(`Error delete : ${err}`);
       result(err, null);
     } else {
-      console.log(`Deleted user with id : ${id}`);
+      console.log(` User with id : ${id} was deleted`);
       result(res, null);
     }
   });
